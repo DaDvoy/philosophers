@@ -1,0 +1,44 @@
+NAME = philo_one
+
+SRC = first_step.c parser.c ./get_next_line/get_next_line.c \
+./get_next_line/get_next_line_utils.c pars_r_direct_color.c main.c \
+parser_map.c parser_map_two.c parser_checks.c raycasting_first.c
+
+OBJ = $(SRC:.c=.o)
+
+SRC_LIBFT = ./libft/*.o
+
+OBJ_LIBFT = $(SRC_LIBFT:.c=.o)
+
+HEADER = ./libft/libft.h ./get_next_line/get_next_line.h cub.h
+
+CC = gcc -g -Wall -Wextra -Werror
+
+RM = rm -f
+
+FLAGS_LIBS =  ./libft/libft.a
+
+MLX = ./minilibx/libmlx.a -framework OpenGL -framework Appkit
+
+all: $(NAME)
+
+$(NAME): $(OBJ) $(HEADER)
+	$(MAKE) -C ./minilibx
+	$(MAKE) -C ./libft bonus
+	$(CC) $(OBJ) $(FLAGS_LIBS) $(MLX) -o $(NAME)
+
+%.o: %.c $(HEADER)
+	$(CC) -o $@ -c $<
+
+clean:
+	$(RM) $(OBJ)
+	$(MAKE) -C ./minilibx clean
+	$(MAKE) -C ./libft clean
+
+fclean: clean
+	$(RM) $(NAME)
+	$(MAKE) -C ./libft fclean
+
+re: fclean all
+
+.PHONY: all clean fclean re
