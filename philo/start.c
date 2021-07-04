@@ -12,6 +12,10 @@ void	start_life(t_common *common)
 	int i;
 
 	i = 0;
+	philos = (t_philos *)malloc(sizeof(t_philos)
+			* (common->initial_data.number_of_philosophers));
+	if (!philos)
+		return (put_str_fd("Error: malloc for philo's\n", 2));
 	common->eating = (pthread_t *)malloc(sizeof(pthread_t)
 			* (common->initial_data.number_of_philosophers));
 	common->dying = (pthread_t *)malloc(sizeof(pthread_t)
