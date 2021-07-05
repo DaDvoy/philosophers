@@ -5,33 +5,48 @@
 //
 //
 
-void	living_philos();
+void	*living_philos(void *one_of);
 
 void	start_life(t_common *common)
 {
 	int i;
 
 	i = 0;
-	philos = (t_philos *)malloc(sizeof(t_philos)
+	common->philos = (t_philos *)malloc(sizeof(t_philos)
 			* (common->initial_data.number_of_philosophers));
-	if (!philos)
+	if (!common->philos)
 		return (put_str_fd("Error: malloc for philo's\n", 2));
-	common->eating = (pthread_t *)malloc(sizeof(pthread_t)
+	common->living = (pthread_t *)malloc(sizeof(pthread_t)
 			* (common->initial_data.number_of_philosophers));
-	common->dying = (pthread_t *)malloc(sizeof(pthread_t)
-			* (common->initial_data.time_to_die));
-	if (!(common->eating || common->dying))
+	if (!(common->living))
 	{
-		put_str_fd("Error: malloc for eating or dying\n", 2);
+		put_str_fd("Error: malloc for living\n", 2);
 		return ;
 	}
 	while(i++ < common->initial_data.number_of_philosophers)
 	{
-		pthread_create(/*smt struct */) // for i - each philo's
+		if (!(pthread_create(&common->living[i], NULL,
+			living_philos(&common->philos[i]), NULL)))
+		{
+			put_str_fd("Error: pthread_create\n", 2);
+			return ;
+		}
+		pthread_detach(common->living[i]);
 	}
 }
 
-void	living_philos()
+void	*living_philos(void *one_of)
 {
+	t_philos  *philo;
 
+	philo = (t_philos *)one_of;
+	printf("%d", philo->number);
+
+
+	return (NULL);
+	// with mutexes take fork
+	// print that philo[number] take fork
+	// again last point
+	// 
+	//
 }

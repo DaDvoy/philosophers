@@ -4,9 +4,10 @@
 # include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <unistd.h>
 
 typedef struct s_philos {
-	//
+	int 		number;
 }				t_philos;
 
 typedef struct s_initial {
@@ -20,10 +21,8 @@ typedef struct s_initial {
 typedef struct s_common {
 	t_initial	initial_data;
 	t_philos	*philos;
-	pthread_t	*eating;
-	pthread_t	*dying;
-
-
+	pthread_t	*living;
+	pthread_t	dying;
 }				t_common;
 
 int				is_digit(int arg);
@@ -32,7 +31,8 @@ int				len_str(char *str);
 int				char_to_int(char *str);
 void			start_life(t_common *common);
 void			put_str_fd(const char *s, int fd);
+void			*living_philos(void *one_of);
 void			zeroing(t_common *common, int argc);
-void			parser(t_common *common, char **argv);
+int				parser(t_common *common, char **argv, int argc);
 void			fill_struct(t_common *common, char **argv, int argc);
 #endif

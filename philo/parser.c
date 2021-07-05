@@ -1,6 +1,6 @@
 #include "philo.h"
 
-int	digit(char **argv, int argc);
+int	digit(char **argv);
 
 int	parser(t_common *common, char **argv, int argc)
 {
@@ -31,6 +31,9 @@ int	digit(char **argv)
 
 void	fill_struct(t_common *common, char **argv, int argc)
 {
+	int i;
+
+	i = 0;
 	common->initial_data.number_of_philosophers = char_to_int(argv[i]);
 	common->initial_data.time_to_die = char_to_int(argv[++i]);
 	common->initial_data.time_to_eat = char_to_int(argv[++i]);
@@ -38,4 +41,6 @@ void	fill_struct(t_common *common, char **argv, int argc)
 	if (argc == 5)
 		common->initial_data.number_of_times_each_philosopher_must_eat
 			= char_to_int(argv[++i]);
+	while (i++ < common->initial_data.number_of_philosophers)
+		common->philos[i].number = i + 1;
 }
