@@ -43,9 +43,13 @@ void	fill_struct(t_common *common, char **argv, int argc)
 	common->initial_data.time_to_eat = char_to_int(argv[3]);
 	common->initial_data.time_to_sleep
 		= char_to_int(argv[4]);
-	if (argc == 6)
+	if (argc == '6')
 		common->initial_data.number_of_times_each_philosopher_must_eat
 			= char_to_int(argv[5]);
-	while (j++ < common->initial_data.number_of_philosophers)
+//	common->left_fork = common->initial_data.number_of_philosophers;
+	while (j < common->initial_data.number_of_philosophers)
+	{
 		common->philos[j].number = j;
+		pthread_mutex_init(&common->left_fork[j + 1], NULL);
+	}
 }

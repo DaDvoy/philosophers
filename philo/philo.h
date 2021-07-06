@@ -7,22 +7,24 @@
 # include <unistd.h>
 
 typedef struct s_philos {
-	int 		number;
+	int				number;
+
 }				t_philos;
 
 typedef struct s_initial {
-	int			number_of_philosophers;
-	int			time_to_die;
-	int			time_to_eat;
-	int			time_to_sleep;
-	int			number_of_times_each_philosopher_must_eat;
+	int				number_of_philosophers;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				number_of_times_each_philosopher_must_eat;
 }				t_initial;
 
 typedef struct s_common {
-	t_initial	initial_data;
-	t_philos	*philos;
-	pthread_t	*living;
-	pthread_t	dying;
+	t_initial		initial_data;
+	t_philos		*philos;
+	pthread_t		*living;
+	pthread_t		dying;
+	pthread_mutex_t	*left_fork;
 }				t_common;
 
 int				is_digit(int arg);

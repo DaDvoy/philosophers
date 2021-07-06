@@ -28,11 +28,15 @@ void	start_life(t_common *common)
 
 void	*living_philos(void *one_of)
 {
-	t_philos  *philo;
+	t_philos	*philo;
+	t_common	*common;
+	int			i;
 
+	i = 1;
 	philo = (t_philos *)one_of;
-	printf("%d\n", philo->number);
-	usleep(100);
+//	printf("%d\n", philo->number);
+//	usleep(100);
+	pthread_mutex_lock(&common->left_fork[i++]);
 
 
 	return (NULL);
