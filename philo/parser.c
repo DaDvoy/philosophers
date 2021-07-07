@@ -1,8 +1,9 @@
 #include "philo.h"
 
-int	digit(char **argv);
+int		digit(char **argv);
+void	distribution_forks();
 
-int	parser(t_common *common, char **argv, int argc)
+int		parser(t_common *common, char **argv, int argc)
 {
 	if (digit(argv) != 1)
 	{
@@ -13,7 +14,7 @@ int	parser(t_common *common, char **argv, int argc)
 		return (1);
 }
 
-int	digit(char **argv)
+int		digit(char **argv)
 {
 	int	i;
 
@@ -46,10 +47,38 @@ void	fill_struct(t_common *common, char **argv, int argc)
 	if (argc == '6')
 		common->initial_data.number_of_times_each_philosopher_must_eat
 			= char_to_int(argv[5]);
-//	common->left_fork = common->initial_data.number_of_philosophers;
-	while (j < common->initial_data.number_of_philosophers)
+	common->left_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t)
+			* common->initial_data.number_of_philosophers);
+	while (j++ < common->initial_data.number_of_philosophers)
 	{
 		common->philos[j].number = j;
-		pthread_mutex_init(&common->left_fork[j + 1], NULL);
+		pthread_mutex_init(&common->left_fork[j], NULL);
+//		printf("num %d\n", j);
+	}
+	distribution_forks(common);
+}
+
+void	distribution_forks(t_common *common)
+{
+	int i;
+	int j;
+
+	j = 0;
+	i = 0;
+	while (i++ < common->initial_data.number_of_philosophers)
+	{
+		common->philos[i].left = &common->left_fork[j];
+		common->philos[i].right = &common->left_fork[j + 1];
+		j++;
+	}
+	i = 0;
+	while (i++ < common->initial_data.number_of_philosophers) {
+		printf("%p left %d\n", common->philos[i].left, common->philos->number);
+		printf("%p right %d\n", common->philos[i].right, common->philos->number++);
 	}
 }
+
+// common->philos[j]->left = &common->left_fork[i]
+//common->philos[j]->right = &common->left_fork[i + 1]
+// left - *com
+// right -

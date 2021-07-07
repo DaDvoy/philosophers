@@ -6,8 +6,13 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+typedef struct s_common	t_common;
+
 typedef struct s_philos {
 	int				number;
+	t_common		*common;
+	pthread_mutex_t *left;
+	pthread_mutex_t *right;
 
 }				t_philos;
 

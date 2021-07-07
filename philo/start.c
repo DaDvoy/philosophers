@@ -1,6 +1,7 @@
 #include "philo.h"
 
 void	*living_philos(void *one_of);
+void	get_time();
 
 void	start_life(t_common *common)
 {
@@ -28,15 +29,21 @@ void	start_life(t_common *common)
 
 void	*living_philos(void *one_of)
 {
-	t_philos	*philo;
-	t_common	*common;
-	int			i;
+	t_philos	*philos;
+//	int			i;
 
-	i = 1;
-	philo = (t_philos *)one_of;
-//	printf("%d\n", philo->number);
-//	usleep(100);
-	pthread_mutex_lock(&common->left_fork[i++]);
+//	i = philos->number;
+	philos = (t_philos *)one_of;
+//	printf("%p\n", philos->common->left_fork);
+//	printf("%d\n", philos->number);
+	if (pthread_mutex_lock(philos->left))
+	{
+		printf("%d  has taken a fork\n", philos->number);
+		pthread_mutex_lock(philos->right);
+		printf("%d  has taken a fork\n", philos->number);
+	}
+	usleep(100);
+	// Do i need iterator?
 
 
 	return (NULL);
@@ -46,3 +53,8 @@ void	*living_philos(void *one_of)
 	// 
 	//
 }
+
+//void	get_time(t_philos *philos)
+//{
+//
+//}
