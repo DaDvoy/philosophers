@@ -1,4 +1,4 @@
-NAME = philo_one
+NAME = philo
 
 SRC = main.c parser.c start.c utils.c
 
