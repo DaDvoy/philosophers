@@ -34,19 +34,22 @@ void		*living_philos(void *one_of)
 	int 		number;
 
 	philos = (t_philos *)one_of;
-	number = philos->number;// + 1;
+	number = philos->number + 1;
 	if (pthread_mutex_lock(philos->left))
 	{
-		printf("%lu: %d  has taken a fork\n", get_time(philos), number);
-		pthread_mutex_lock(philos->right);
-		printf("%lu: %d  has taken a fork\n", get_time(philos), number);
+		if (pthread_mutex_lock(philos->right))
+		{printf("%lu: %d  has taken a fork\n", get_time(philos), number);
+			printf("%lu: %d  has taken a fork\n", get_time(philos), number);}
+		else
+			pthread_mutex_unlock(philos->left);
 	}
 	our_usleep(200, philos);
 	pthread_mutex_unlock(philos->left);
 	pthread_mutex_unlock(philos->right);
 	printf("%lu: %d  is sleeping\n", get_time(philos), number);
-	our_usleep(200, philos);
+	our_usleep(200, philos); // (200)need to change at time from structure
 	printf("%lu: %d  is thinking\n", get_time(philos), number);
+	our_usleep(200, philos); // (200)need to change at time from structure
 	return (NULL);
 }
 

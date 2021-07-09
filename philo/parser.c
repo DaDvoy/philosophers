@@ -32,11 +32,9 @@ int		digit(char **argv)
 
 void	fill_struct(t_common *common, char **argv, int argc)
 {
-	int j;
-	int k;
+	int i;
 
-	j = 0;
-	k = 0;
+	i = 0;
 	common->philos = (t_philos *)malloc(sizeof(t_philos)
 		* (common->initial_data.number_of_philosophers));
 	if (!common->philos)
@@ -46,18 +44,15 @@ void	fill_struct(t_common *common, char **argv, int argc)
 	common->initial_data.time_to_eat = char_to_int(argv[3]);
 	common->initial_data.time_to_sleep
 		= char_to_int(argv[4]);
-	if (argc == '6')
+	if (argc > 5)
 		common->initial_data.number_of_times_each_philosopher_must_eat
 			= char_to_int(argv[5]);
 	common->left_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t)
 			* common->initial_data.number_of_philosophers);
-//	k = common->initial_data.number_of_philosophers;
-	while (j++ < common->initial_data.number_of_philosophers)
+	while (i++ < common->initial_data.number_of_philosophers)// && k++ < common->initial_data.number_of_philosophers - 1)
 	{
-		common->philos[j].number = j;
-		pthread_mutex_init(&common->left_fork[k++], NULL);
-//		pthread_mutex_init(&common->philos[j].left[k], NULL);
-//		pthread_mutex_init(&common->philos[j].right[j], NULL);
+		common->philos[i].number = i;
+		pthread_mutex_init(&common->left_fork[i], NULL);
 	}
 	pthread_mutex_init(&common->philos->end_time, NULL);
 	distribution_forks(common);
@@ -67,18 +62,15 @@ void	distribution_forks(t_common *common)
 {
 	int i;
 	int j;
-	int k;
 
 	i = 0;
-	k = 0;
-	j = common->initial_data.number_of_philosophers;
-	while (i++ < common->initial_data.number_of_philosophers)
+	while (i++ < common->initial_data.number_of_philosophers - 1)
 	{
-		common->philos[i].left = &common->left_fork[j - k];
-		common->philos[i].right = &common->left_fork[k++];
-		j--;
-//		k++;
+		common->philos[i].left = &common->left_fork[i];
+		common->philos[i].right = &common->left_fork[i + 1];
 	}
+	common->philos[i].left = &common->left_fork[i];
+	common->philos[i].right = &common->left_fork[1];
 	i = 0;
 	while (i++ < common->initial_data.number_of_philosophers) {
 		printf("%p left %d\n", common->philos[i].left, common->philos->number);
