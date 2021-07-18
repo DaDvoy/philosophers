@@ -15,7 +15,15 @@ typedef struct s_philos {
 	pthread_mutex_t *left;
 	pthread_mutex_t *right;
 	pthread_mutex_t	end_time;
-	unsigned long 	start_time;
+	pthread_mutex_t	print;
+	ssize_t			time_last_meal;
+	ssize_t		 	start_time;
+	int				amount_meals;
+	int				number_of_philosophers;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				number_of_times_each_philosopher_must_eat;
 
 }				t_philos;
 
@@ -41,7 +49,8 @@ int				is_digit(int arg);
 int				digit(char **argv);
 int				len_str(char *str);
 int				char_to_int(char *str);
-unsigned long	get_time(t_philos *philos);
+ssize_t			get_time(ssize_t time);
+void			refill(t_common *common);
 void			start_life(t_common *common);
 void			*living_philos(void *one_of);
 void			put_str_fd(const char *s, int fd);

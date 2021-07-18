@@ -33,7 +33,7 @@ int	main(int argc, char **argv)
 		zeroing(common, argc);
 		if (parser(common, argv, argc) == 0)
 		{
-			common->philos->start_time = get_time(common->philos);
+			common->philos->start_time = get_time(0);
 			start_life(common);
 		}
 		else
