@@ -2,21 +2,21 @@
 
 void	zeroing(t_common *common, int argc)
 {
-	if (argc == 6)
-	{
+	// if (argc == 6)
+	// {
 		common->initial_data.number_of_philosophers = 0;
 		common->initial_data.time_to_die = 0;
 		common->initial_data.time_to_eat = 0;
 		common->initial_data.number_of_philosophers = 0;
 		common->initial_data.number_of_times_each_philosopher_must_eat = 0;
-	}
-	else
-	{
-		common->initial_data.number_of_philosophers = 0;
-		common->initial_data.time_to_die = 0;
-		common->initial_data.time_to_eat = 0;
-		common->initial_data.number_of_philosophers = 0;
-	}
+	// }
+	// else
+	// {
+	// 	common->initial_data.number_of_philosophers = 0;
+	// 	common->initial_data.time_to_die = 0;
+	// 	common->initial_data.time_to_eat = 0;
+	// 	common->initial_data.number_of_philosophers = 0;
+	// }
 }
 
 int	main(int argc, char **argv)
@@ -34,6 +34,7 @@ int	main(int argc, char **argv)
 		if (parser(common, argv, argc) == 0)
 		{
 			common->philos->start_time = get_time(0);
+			printf("%lu: MY_TIME: \n", common->philos->start_time);
 			start_life(common);
 		}
 		else

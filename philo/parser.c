@@ -40,11 +40,11 @@ void	fill_struct(t_common *common, char **argv, int argc)
 
 	i = 1;
 	j = 0;
+	common->initial_data.number_of_philosophers = char_to_int(argv[1]);
 	common->philos = (t_philos *)malloc(sizeof(t_philos)
 		* (common->initial_data.number_of_philosophers));
 	if (!common->philos)
 		return (put_str_fd("Error: malloc for philo's\n", 2));
-	common->initial_data.number_of_philosophers = char_to_int(argv[1]);
 	common->initial_data.time_to_die = char_to_int(argv[2]);
 	common->initial_data.time_to_eat = char_to_int(argv[3]);
 	common->initial_data.time_to_sleep
@@ -52,16 +52,18 @@ void	fill_struct(t_common *common, char **argv, int argc)
 	if (argc > 5)
 		common->initial_data.number_of_times_each_philosopher_must_eat
 			= char_to_int(argv[5]);
+	else
+		common->initial_data.number_of_times_each_philosopher_must_eat = -1;
 	common->left_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t)
 			* common->initial_data.number_of_philosophers);
 	while (j++ < common->initial_data.number_of_philosophers)// && k++ < common->initial_data.number_of_philosophers - 1)
 	{
 		common->philos[j].number = j;
-		pthread_mutex_init(&common->left_fork[i], NULL);
+		printf("%d number philo: \n", common->philos[j].number);
+		pthread_mutex_init(&common->left_fork[j], NULL);
 	}
 	pthread_mutex_init(&common->philos->end_time, NULL);
 	distribution_forks(common);
-	common->philos->start_time = get_time(0);
 }
 
 void	distribution_forks(t_common *common)
@@ -92,7 +94,7 @@ void	refill_struct(t_common *common)
 	if (common->initial_data.number_of_times_each_philosopher_must_eat != 0)
 		common->philos->amount_meals = common->initial_data.number_of_times_each_philosopher_must_eat;
 	else 
-		common->philos->amount_meals = 0;
+		common->philos->amount_meals = -1;
 }
 
 // common->philos[j]->left = &common->left_fork[i]
