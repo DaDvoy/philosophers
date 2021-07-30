@@ -1,6 +1,6 @@
 #include "philo.h"
 
-void	zeroing(t_common *common, int argc)
+void	zeroing(t_common *common)//, int argc)
 {
 	// if (argc == 6)
 	// {
@@ -30,10 +30,10 @@ int	main(int argc, char **argv)
 	}
 	if (!(argc < 5 || argc > 6))
 	{
-		zeroing(common, argc);
+		zeroing(common);//, argc);
 		if (parser(common, argv, argc) == 0)
 		{
-			common->philos->start_time = get_time(0);
+			// common->philos->start_time = get_time(0);
 			printf("%lu: MY_TIME: \n", common->philos->start_time);
 			start_life(common);
 		}

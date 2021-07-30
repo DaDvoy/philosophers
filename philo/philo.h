@@ -16,7 +16,7 @@ typedef struct s_philos {
 	pthread_mutex_t *right;
 	pthread_mutex_t	end_time;
 	pthread_mutex_t	print;
-	ssize_t			time_last_meal;
+	ssize_t			present_time;
 	ssize_t		 	start_time;
 	int				amount_meals;
 	int				number_of_philosophers;
@@ -54,7 +54,7 @@ void			refill(t_common *common);
 void			start_life(t_common *common);
 void			*living_philos(void *one_of);
 void			put_str_fd(const char *s, int fd);
-void			zeroing(t_common *common, int argc);
+void			zeroing(t_common *common);//, int argc);
 int				parser(t_common *common, char **argv, int argc);
 void			fill_struct(t_common *common, char **argv, int argc);
 #endif

@@ -78,23 +78,30 @@ void	distribution_forks(t_common *common)
 	}
 	common->philos[i].left = &common->left_fork[i];
 	common->philos[i].right = &common->left_fork[1];
-	i = 0;
-	while (i++ < common->initial_data.number_of_philosophers) {
-		printf("%p left %d\n", common->philos[i].left, common->philos->number);
-		printf("%p right %d\n", common->philos[i].right, common->philos->number++);
-	}
+	// i = 0;
+	// while (i++ < common->initial_data.number_of_philosophers) {
+	// 	printf("%p left %d\n", common->philos[i].left, common->philos->number);
+	// 	printf("%p right %d\n", common->philos[i].right, common->philos->number++);
+	// }
 }
 
 void	refill_struct(t_common *common)
 {
-	common->philos->number_of_philosophers = common->initial_data.number_of_philosophers;
-	common->philos->time_to_die = common->initial_data.time_to_die;
-	common->philos->time_to_eat = common->initial_data.time_to_eat;
-	common->philos->time_to_sleep = common->initial_data.time_to_sleep;
-	if (common->initial_data.number_of_times_each_philosopher_must_eat != 0)
-		common->philos->amount_meals = common->initial_data.number_of_times_each_philosopher_must_eat;
-	else 
-		common->philos->amount_meals = -1;
+	int i;
+
+	i = 0;
+	while (i < common->initial_data.number_of_philosophers)
+	{
+		common->philos->number_of_philosophers = common->initial_data.number_of_philosophers;
+		common->philos->time_to_die = common->initial_data.time_to_die;
+		common->philos->time_to_eat = common->initial_data.time_to_eat;
+		common->philos->time_to_sleep = common->initial_data.time_to_sleep;
+		if (common->initial_data.number_of_times_each_philosopher_must_eat != 0)
+			common->philos->amount_meals = common->initial_data.number_of_times_each_philosopher_must_eat;
+		else 
+			common->philos->amount_meals = -1;
+		i++;
+	}
 }
 
 // common->philos[j]->left = &common->left_fork[i]

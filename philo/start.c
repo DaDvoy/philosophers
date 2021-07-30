@@ -33,33 +33,30 @@ void		*living_philos(void *one_of)
 	t_philos	*philos;
 	int 		number;
 
-	while (1)
-	{
 	philos = (t_philos *)one_of;
 	number = philos->number;// + 1;
-	if (pthread_mutex_lock(philos->left))
+	philos->start_time = get_time(0);
+	while (1)
 	{
-		if (pthread_mutex_lock(philos->right))
-		{
+		pthread_mutex_lock(philos->left);
+		pthread_mutex_lock(philos->right);
 		pthread_mutex_lock(&philos->print);
 		printf("%lu: %d has taken a fork\n", get_time(philos->start_time), number);
+		printf("%lu: %d has taken a fork\n", get_time(philos->start_time), number);
+		philos->present_time = get_time(philos->start_time);
+		printf("%lu: %d is eating\n", get_time(philos->start_time), number);
+		philos->amount_meals++;
+		our_usleep(philos->time_to_eat * 1000);                                                                                                                        
+		pthread_mutex_unlock(philos->left);
+		pthread_mutex_unlock(philos->right);
 		pthread_mutex_unlock(&philos->print);
-		pthread_mutex_lock(&philos->print);
-		printf("%lu: %d has taken a fork\n", get_time(philos->start_time), number);
-		pthread_mutex_unlock(&philos->print);}
-	}
-	pthread_mutex_lock(&philos->print);
-	philos->time_last_meal = get_time(philos->start_time);
-	printf("%lu: %d is eating\n", get_time(philos->start_time), number);
-	pthread_mutex_unlock(&philos->print);
-	philos->amount_meals++;
-	our_usleep(philos->time_to_eat * 1000);                                                                                                                        
-	pthread_mutex_unlock(philos->left);
-	pthread_mutex_unlock(philos->right);
-	printf("%lu: %d is sleeping\n", get_time(philos->start_time), number);
-	our_usleep(philos->time_to_sleep * 1000);      // (200)need to change at time from structure
-	printf("%lu: %d is thinking\n", get_time(philos->start_time), number);
-	// our_usleep(200); // (200)need to change at time from structure
+		// our_usleep(philos->time_to_eat);
+		printf("%lu: %d is sleeping\n", get_time(philos->start_time), number);
+		our_usleep(philos->time_to_sleep * 1000);
+		// pthread_mutex_lock(&philos->print);
+		printf("%lu: %d is thinking\n", get_time(philos->start_time), number);
+		// pthread_mutex_unlock(&philos->print);
+		our_usleep(philos->time_to_die);
 	}
 	return (NULL);
 }
