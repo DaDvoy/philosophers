@@ -46,16 +46,13 @@ void		*living_philos(void *one_of)
 		philos->present_time = get_time(philos->start_time);
 		printf("%lu: %d is eating\n", get_time(philos->start_time), number);
 		philos->amount_meals++;
-		our_usleep(philos->time_to_eat * 1000);                                                                                                                        
+		our_usleep(philos->time_to_eat * 1000);
 		pthread_mutex_unlock(philos->left);
 		pthread_mutex_unlock(philos->right);
 		pthread_mutex_unlock(&philos->print);
-		// our_usleep(philos->time_to_eat);
 		printf("%lu: %d is sleeping\n", get_time(philos->start_time), number);
 		our_usleep(philos->time_to_sleep * 1000);
-		// pthread_mutex_lock(&philos->print);
 		printf("%lu: %d is thinking\n", get_time(philos->start_time), number);
-		// pthread_mutex_unlock(&philos->print);
 		our_usleep(philos->time_to_die);
 	}
 	return (NULL);

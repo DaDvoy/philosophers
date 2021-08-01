@@ -20,17 +20,19 @@ int		parser(t_common *common, char **argv, int argc)
 int		digit(char **argv)
 {
 	int	i;
+	int	ret_val;
 
 	i = 0;
+	ret_val = 0;
 	while (argv[i])
 	{
 		if (is_digit(char_to_int(argv[i++])) == 1)
 		{
 			printf("Wrong argument\n");
-			return (1);
+			ret_val = 1;
 		}
 	}
-	return (0);
+	return (ret_val);
 }
 
 void	fill_struct(t_common *common, char **argv, int argc)
@@ -40,11 +42,11 @@ void	fill_struct(t_common *common, char **argv, int argc)
 
 	i = 1;
 	j = 0;
-	common->initial_data.number_of_philosophers = char_to_int(argv[1]);
 	common->philos = (t_philos *)malloc(sizeof(t_philos)
 		* (common->initial_data.number_of_philosophers));
 	if (!common->philos)
 		return (put_str_fd("Error: malloc for philo's\n", 2));
+	common->initial_data.number_of_philosophers = char_to_int(argv[1]);
 	common->initial_data.time_to_die = char_to_int(argv[2]);
 	common->initial_data.time_to_eat = char_to_int(argv[3]);
 	common->initial_data.time_to_sleep
