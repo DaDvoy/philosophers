@@ -41,18 +41,18 @@ void		*living_philos(void *one_of)
 		pthread_mutex_lock(philos->left);
 		pthread_mutex_lock(philos->right);
 		pthread_mutex_lock(&philos->print);
-		printf("%lu: %d has taken a fork\n", get_time(philos->start_time), number);
-		printf("%lu: %d has taken a fork\n", get_time(philos->start_time), number);
+		printf("%lu: "ANSI_COLOR_GREY" %d has taken a fork\n" ANSI_COLOR_RESET, get_time(philos->start_time), number);
+		printf("%lu: "ANSI_COLOR_GREY" %d has taken a fork\n" ANSI_COLOR_RESET, get_time(philos->start_time), number);
 		philos->present_time = get_time(philos->start_time);
-		printf("%lu: %d is eating\n", get_time(philos->start_time), number);
+		printf("%lu: "ANSI_COLOR_GREEN" %d is eating\n" ANSI_COLOR_RESET, get_time(philos->start_time), number);
 		philos->amount_meals++;
 		our_usleep(philos->time_to_eat * 1000);
 		pthread_mutex_unlock(philos->left);
 		pthread_mutex_unlock(philos->right);
 		pthread_mutex_unlock(&philos->print);
-		printf("%lu: %d is sleeping\n", get_time(philos->start_time), number);
+		printf("%lu: "ANSI_COLOR_CYAN" %d is sleeping\n" ANSI_COLOR_RESET, get_time(philos->start_time), number);
 		our_usleep(philos->time_to_sleep * 1000);
-		printf("%lu: %d is thinking\n", get_time(philos->start_time), number);
+		printf("%lu: "ANSI_COLOR_MAGENTA" %d is thinking\n" ANSI_COLOR_RESET, get_time(philos->start_time), number);
 		our_usleep(philos->time_to_die);
 	}
 	return (NULL);
