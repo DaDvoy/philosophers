@@ -17,8 +17,8 @@ int	check_arg(t_common *common, int argc, char **argv)
 	if (!(argc < 5 || argc > 6))
 	{
 		zeroing(common);
-		if (parser(common, argv, argc) == 0)
-			start_life(common);
+		if (parser(common, argv, argc) == 0){
+			start_life(common);}
 		else
 			flag = 1;
 	}
