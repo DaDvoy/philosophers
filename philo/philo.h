@@ -3,7 +3,7 @@
 
 #define RED     "\x1b[31m"
 #define GREEN   "\x1b[32m"
-#define YELLOW   "\x1b[33m"
+#define YELLOW  "\x1b[33m"
 #define MAGENTA "\x1b[35m"
 #define CYAN    "\x1b[36m"
 #define GREY    "\x1b[90m"
@@ -26,7 +26,7 @@ typedef struct s_philos {
 	pthread_mutex_t	print;
 	ssize_t			present_time;
 	// pthread_t		*living;
-	unsigned int		 	start_time;
+	int				start_time;
 	int				amount_meals;
 	int				number_of_philosophers;
 	int				time_to_die;
@@ -57,7 +57,7 @@ int				is_digit(int arg);
 int				digit(char **argv);
 int				len_str(char *str);
 int				char_to_int(char *str);
-unsigned long			get_time(void);
+int	get_time(void);
 void			refill(t_common *common);
 void			start_life(t_common *common);
 void			*living_philos(void *one_of);

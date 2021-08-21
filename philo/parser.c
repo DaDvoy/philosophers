@@ -66,7 +66,7 @@ void	init_forks(t_common *common)
 	while (j < common->initial_data.number_of_philosophers)
 	{
 		common->philos[j].number = j;
-		printf("%d number philo: \n", common->philos[j].number);
+		// printf("%d number philo: \n", common->philos[j].number);
 		pthread_mutex_init(&common->left_fork[j], NULL);
 		j++;
 	}
@@ -104,6 +104,7 @@ void	refill_struct(t_common *common)
 		return (put_str_fd("Error: malloc for philo's\n", 2));
 	while (i < common->initial_data.number_of_philosophers)
 	{
+		common->philos[i].start_time = get_time();
 		common->philos[i].number_of_philosophers = common->initial_data.number_of_philosophers;
 		common->philos[i].time_to_die = common->initial_data.time_to_die;
 		common->philos[i].time_to_eat = common->initial_data.time_to_eat;

@@ -35,13 +35,10 @@ int	main(int argc, char **argv)
 	int		flag;
 	t_common *common;
 
-	flag = 0;
+	flag = 1;
 	if ((common = (t_common *)malloc(sizeof(t_common))))
 		flag = check_arg(common, argc, argv);
 	else
-	{
 		put_str_fd("Error: malloc for common struct\n", 2);
-		flag = 1;
-	}
 	return (flag);
 }
