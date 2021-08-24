@@ -7,6 +7,7 @@ void	zeroing(t_common *common)
 	common->initial_data.time_to_eat = 0;
 	common->initial_data.number_of_philosophers = 0;
 	common->initial_data.number_of_times_each_philosopher_must_eat = 0;
+	common->death = 0;
 }
 
 int	check_arg(t_common *common, int argc, char **argv)
@@ -14,7 +15,7 @@ int	check_arg(t_common *common, int argc, char **argv)
 	int flag;
 
 	flag = 0;
-	if (!(argc < 5 || argc > 6))
+	if (argc == 5 || argc == 6)
 	{
 		zeroing(common);
 		if (parser(common, argv, argc) == 0){

@@ -16,9 +16,10 @@ void			start_life(t_common *common)
 		put_str_fd("Error: malloc for living\n", 2);
 		return ;
 	}
+	if (pthread_create(&common->dying, NULL, death_philos, (void *)(common)) == -1)
+		return (put_str_fd("Error: pthread_create\n", 2));
 	while(++i < common->initial_data.number_of_philosophers)
 	{
-		// common->philos[i].start_time = get_time();
 		if ((pthread_create(&common->living[i], NULL,
 			living_philos, (void *)(&common->philos[i]))) == -1)
 			return (put_str_fd("Error: pthread_create\n", 2));
@@ -40,22 +41,25 @@ void		*living_philos(void *one_of)
 	number = philos->number + 1;
 	while (1)
 	{
+		if (number % 2 == 0)
+			our_usleep(10);
 		pthread_mutex_lock(philos->left);
 		pthread_mutex_lock(philos->right);
-		// pthread_mutex_lock(&philos->print);
-		printf(GREY "%u: "RESET" "YELLOW" %d has taken a fork\n" RESET, get_time() - philos->start_time, number);
-		printf(GREY "%u: "RESET" "YELLOW" %d has taken a fork\n" RESET, get_time() - philos->start_time, number);
-		// philos->present_time = get_time() - philos->start_time;
-		printf(GREY "%u: "RESET" "GREEN" %d is eating\n" RESET, get_time() - philos->start_time, number);
+		printf(GREY "%ld: "RESET" "YELLOW" %d has taken a fork\n" RESET, get_time() - philos->start_time, number);
+		printf(GREY "%ld: "RESET" "YELLOW" %d has taken a fork\n" RESET, get_time() - philos->start_time, number);
+		philos->last_time_meals = get_time() - philos->start_time;
+		pthread_mutex_lock(&philos->print);
+		printf(GREY "%ld: "RESET" "GREEN" %d is eating\n" RESET, get_time() - philos->start_time, number);
+		pthread_mutex_unlock(&philos->print);
 		our_usleep(philos->time_to_eat);
 		philos->amount_meals++;
 		pthread_mutex_unlock(philos->left);
 		pthread_mutex_unlock(philos->right);
-		// pthread_mutex_unlock(&philos->print);
-		printf(GREY "%u: "RESET" "CYAN" %d is sleeping\n" RESET, get_time() - philos->start_time, number);
+		printf(GREY "%ld: "RESET" "CYAN" %d is sleeping\n" RESET, get_time() - philos->start_time, number);
 		our_usleep(philos->time_to_sleep);
-		printf(GREY "%u: "RESET" "MAGENTA" %d is thinking\n" RESET, get_time() - philos->start_time, number);
-		our_usleep(philos->time_to_die);
+		printf(GREY "%ld: "RESET" "MAGENTA" %d is thinking\n" RESET, get_time() - philos->start_time, number);
+		if (number % 2 != 0)
+			our_usleep(9);
 	}
 	return (NULL);
 }

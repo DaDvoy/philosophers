@@ -24,9 +24,9 @@ typedef struct s_philos {
 	pthread_mutex_t *right;
 	pthread_mutex_t	end_time;
 	pthread_mutex_t	print;
-	ssize_t			present_time;
-	// pthread_t		*living;
-	int				start_time;
+	long			last_time_meals;
+	int				death;
+	long				start_time;
 	int				amount_meals;
 	int				number_of_philosophers;
 	int				time_to_die;
@@ -49,12 +49,13 @@ typedef struct s_common {
 	pthread_t		*living;
 	pthread_t		dying;
 	pthread_mutex_t	*left_fork;
-//	pthread_mutex_t	end_time;
+	pthread_mutex_t	dead;
 	unsigned int 	start_time;
+	int				death;
 }				t_common;
 
 int				is_digit(int arg);
-int				digit(char **argv);
+int				digit(char **argv, int argc);
 int				len_str(char *str);
 int				char_to_int(char *str);
 int	get_time(void);
@@ -65,4 +66,5 @@ void			put_str_fd(const char *s, int fd);
 void			zeroing(t_common *common);//, int argc);
 int				parser(t_common *common, char **argv, int argc);
 void			fill_struct(t_common *common, char **argv, int argc);
+void			*death_philos(void *one_of);
 #endif
