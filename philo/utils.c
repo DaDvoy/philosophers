@@ -38,12 +38,20 @@ int	char_to_int(char *str)
 	return (c * b);
 }
 
-int	is_digit(int arg)
+int	is_digit(char *str)
 {
-	if (arg >= '0' && arg <= '9')
-		return (1);
-	else
-		return (0);
+	int	i;
+	int	flag;
+
+	i = 0;
+	flag = 0;
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			flag = 1;
+		i++;
+	}
+	return (flag);
 }
 
 void		put_str_fd(const char *s, int fd)

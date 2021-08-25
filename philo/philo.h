@@ -54,11 +54,11 @@ typedef struct s_common {
 	int				death;
 }				t_common;
 
-int				is_digit(int arg);
+int				is_digit(char *str);
 int				digit(char **argv, int argc);
 int				len_str(char *str);
 int				char_to_int(char *str);
-int	get_time(void);
+int				get_time(long start_time);
 void			refill(t_common *common);
 void			start_life(t_common *common);
 void			*living_philos(void *one_of);

@@ -15,7 +15,7 @@ int	check_arg(t_common *common, int argc, char **argv)
 	int flag;
 
 	flag = 0;
-	if (argc == 5 || argc == 6)
+	if (!(argc < 5 || argc > 6))
 	{
 		zeroing(common);
 		if (parser(common, argv, argc) == 0){
@@ -25,7 +25,7 @@ int	check_arg(t_common *common, int argc, char **argv)
 	}
 	else
 	{
-		put_str_fd("Wrong amount of options\n", 2);
+		put_str_fd(RED "Error: wrong amount of options\n" RESET, 2);
 		flag = 1;
 	}
 	return (flag);

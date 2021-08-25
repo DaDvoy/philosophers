@@ -1,7 +1,7 @@
 #include "philo.h"
 
 void			*living_philos(void *one_of);
-int				get_time(void);
+int				get_time(long start_time);
 void 			our_usleep(long micro_sec);
 
 void			start_life(t_common *common)
@@ -42,35 +42,36 @@ void		*living_philos(void *one_of)
 	while (1)
 	{
 		if (number % 2 == 0)
-			our_usleep(10);
+			our_usleep(50);
+		printf("%d -- X\n", philos->time_to_die);
 		pthread_mutex_lock(philos->left);
 		pthread_mutex_lock(philos->right);
-		printf(GREY "%ld: "RESET" "YELLOW" %d has taken a fork\n" RESET, get_time() - philos->start_time, number);
-		printf(GREY "%ld: "RESET" "YELLOW" %d has taken a fork\n" RESET, get_time() - philos->start_time, number);
-		philos->last_time_meals = get_time() - philos->start_time;
+		printf(GREY "%d: "RESET" "YELLOW" %d has taken a fork\n" RESET, get_time(philos->start_time), number);
+		printf(GREY "%d: "RESET" "YELLOW" %d has taken a fork\n" RESET, get_time(philos->start_time), number);
 		pthread_mutex_lock(&philos->print);
-		printf(GREY "%ld: "RESET" "GREEN" %d is eating\n" RESET, get_time() - philos->start_time, number);
+		printf(GREY "%d: "RESET" "GREEN" %d is eating\n" RESET, get_time(philos->start_time), number);
+		philos->last_time_meals = get_time(philos->start_time);
 		pthread_mutex_unlock(&philos->print);
 		our_usleep(philos->time_to_eat);
 		philos->amount_meals++;
 		pthread_mutex_unlock(philos->left);
 		pthread_mutex_unlock(philos->right);
-		printf(GREY "%ld: "RESET" "CYAN" %d is sleeping\n" RESET, get_time() - philos->start_time, number);
+		printf(GREY "%d: "RESET" "CYAN" %d is sleeping\n" RESET, get_time(philos->start_time), number);
 		our_usleep(philos->time_to_sleep);
-		printf(GREY "%ld: "RESET" "MAGENTA" %d is thinking\n" RESET, get_time() - philos->start_time, number);
+		printf(GREY "%d: "RESET" "MAGENTA" %d is thinking\n" RESET, get_time(philos->start_time), number);
 		if (number % 2 != 0)
-			our_usleep(9);
+			our_usleep(50);
 	}
 	return (NULL);
 }
 
-int		get_time(void)
+int		get_time(long start_time)
 {
 	struct timeval	actual;
 	long			time;
 
 	gettimeofday(&actual, NULL);
-	time = actual.tv_sec * 1000 + actual.tv_usec / 1000;
+	time = (actual.tv_sec * 1000 + actual.tv_usec / 1000) - start_time;
 	return (time);
 }
 
@@ -78,7 +79,7 @@ void 		our_usleep(long micro_sec)
 {
 	long		start;
 
-	start = get_time();
-	while (get_time() - start < micro_sec)
-		usleep(100);
+	start = get_time(0);
+	while (get_time(0) - start < micro_sec)
+		usleep(50);
 }

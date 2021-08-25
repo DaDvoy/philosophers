@@ -24,24 +24,18 @@ int		digit(char **argv, int argc)
 {
 	int	i;
 	int	count;
-	int	ret_val;
 
 	i = 1;
-	printf("%d - ")
-	count = argc;
-	ret_val = 0;
-	while (argv[i])
+	count = 1;
+	while (count++ < argc)
 	{
-		while (count-- > 0)
+		if (is_digit(argv[i++]) == 1)
 		{
-			if (is_digit(char_to_int(argv[i++])) == 1)
-			{
-				printf("Wrong argument\n");
-				ret_val = 1;
-			}
+			printf(RED "Error: wrong argument\n" RESET);
+			return (1);
 		}
 	}
-	return (ret_val);
+	return (0);
 }
 
 void	fill_struct(t_common *common, char **argv, int argc)
@@ -103,7 +97,7 @@ void	refill_struct(t_common *common)
 		return (put_str_fd("Error: malloc for philo's\n", 2));
 	while (i < common->initial_data.number_of_philosophers)
 	{
-		common->philos[i].start_time = get_time();
+		common->philos[i].start_time = get_time(0);
 		common->philos[i].amount_meals = 0;
 		common->philos[i].last_time_meals = 0;
 		common->philos[i].number_of_philosophers = common->initial_data.number_of_philosophers;
