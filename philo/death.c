@@ -35,17 +35,17 @@ void		*death_philos(void *one_of)
 			if (get_time(common->philos[i].start_time) > (common->philos[i].last_time_meals + common->philos[i].time_to_die))
 			{
 				// pthread_mutex_lock(&common->philos[i].print);
-                // pthread_mutex_lock(&common->dead);
                 printf(GREY "%d: "RESET" "RED" %d  died\n" RESET, get_time(common->philos[i].start_time), number);
-                common->philos->death = 1;
+                common->philos[i].death = 1;
                 // pthread_mutex_unlock(&common->philos[i].print);
                 // return (NULL);
                 exit (1);
 			}
 				// end of program(return NULL) + print die 
 		}
-        // if (common->philos->number_of_times_each_philosopher_must_eat != -1 && check_count_meals(common))
-        //     return (NULL);
+        if (common->initial_data.number_of_times_each_philosopher_must_eat != -1 && check_count_meals(common) == 0)
+            exit(1);
+            // return (NULL);
 		//  // count meals && == needed amount that  --- end of programm
 	}
     return (NULL);

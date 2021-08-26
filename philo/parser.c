@@ -48,13 +48,11 @@ void	fill_struct(t_common *common, char **argv, int argc)
 	common->initial_data.time_to_eat = char_to_int(argv[3]);
 	common->initial_data.time_to_sleep
 		= char_to_int(argv[4]);
-	if (argc > 5)
+	if (argc == 6)
 		common->initial_data.number_of_times_each_philosopher_must_eat
 			= char_to_int(argv[5]);
 	else
 		common->initial_data.number_of_times_each_philosopher_must_eat = -1;
-	common->left_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t)
-			* common->initial_data.number_of_philosophers);
 }
 
 void	init_forks(t_common *common)
@@ -62,6 +60,9 @@ void	init_forks(t_common *common)
 	int	j;
 
 	j = 0;
+	if (!(common->left_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t)
+			* common->initial_data.number_of_philosophers)))
+		return (put_str_fd("Error: malloc for mutex of left forks\n", 2));
 	while (j < common->initial_data.number_of_philosophers)
 	{
 		common->philos[j].number = j;
@@ -79,11 +80,12 @@ void	distribution_forks(t_common *common)
 	while (i < common->initial_data.number_of_philosophers - 1)
 	{
 		common->philos[i].left = &common->left_fork[i];
-		common->philos[i].right = &common->left_fork[i + 1];
+		int count = i + 1;
+		common->philos[i].right = &common->left_fork[count];
 		i++;
 	}
 	common->philos[i].left = &common->left_fork[i];
-	common->philos[i].right = &common->left_fork[1];
+	common->philos[i].right = &common->left_fork[0];
 }
 
 void	refill_struct(t_common *common)

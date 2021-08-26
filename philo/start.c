@@ -1,9 +1,5 @@
 #include "philo.h"
 
-void			*living_philos(void *one_of);
-int				get_time(long start_time);
-void 			our_usleep(long micro_sec);
-
 void			start_life(t_common *common)
 {
 	int i;
@@ -12,74 +8,37 @@ void			start_life(t_common *common)
 	common->living = (pthread_t *)malloc(sizeof(pthread_t)
 			* (common->initial_data.number_of_philosophers));
 	if (!(common->living))
-	{
-		put_str_fd("Error: malloc for living\n", 2);
-		return ;
-	}
-	if (pthread_create(&common->dying, NULL, death_philos, (void *)(common)) == -1)
+		return (put_str_fd("Error: malloc for living\n", 2));
+	thread_death(common);
+	thread_living(common);
+}
+
+void	thread_death(t_common *common)
+{
+	int	i;
+
+	i = -1;
+		if (pthread_create(&common->dying, NULL, death_philos, (void *)(common)) == -1)
 		return (put_str_fd("Error: pthread_create\n", 2));
-	while(++i < common->initial_data.number_of_philosophers)
+	pthread_detach(common->dying);
+}
+
+void	thread_living(t_common *common)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	j = -1;
+	while(++i < common->initial_data.number_of_philosophers && common->death != 1)
 	{
 		if ((pthread_create(&common->living[i], NULL,
 			living_philos, (void *)(&common->philos[i]))) == -1)
 			return (put_str_fd("Error: pthread_create\n", 2));
 	}
-	i = -1;
-	while (++i < common->initial_data.number_of_philosophers)
+	while (++j < common->initial_data.number_of_philosophers)
 	{
-		pthread_join(common->living[i], NULL);
-		pthread_detach(common->living[i]);
+		pthread_join(common->living[j], NULL);
+		pthread_detach(common->living[j]);
 	}
-}
-
-void		*living_philos(void *one_of)
-{
-	t_philos	*philos;
-	int 		number;
-
-	philos = (t_philos *)one_of;
-	number = philos->number + 1;
-	while (1)
-	{
-		if (number % 2 == 0)
-			our_usleep(50);
-		printf("%d -- X\n", philos->time_to_die);
-		pthread_mutex_lock(philos->left);
-		pthread_mutex_lock(philos->right);
-		printf(GREY "%d: "RESET" "YELLOW" %d has taken a fork\n" RESET, get_time(philos->start_time), number);
-		printf(GREY "%d: "RESET" "YELLOW" %d has taken a fork\n" RESET, get_time(philos->start_time), number);
-		pthread_mutex_lock(&philos->print);
-		printf(GREY "%d: "RESET" "GREEN" %d is eating\n" RESET, get_time(philos->start_time), number);
-		philos->last_time_meals = get_time(philos->start_time);
-		pthread_mutex_unlock(&philos->print);
-		our_usleep(philos->time_to_eat);
-		philos->amount_meals++;
-		pthread_mutex_unlock(philos->left);
-		pthread_mutex_unlock(philos->right);
-		printf(GREY "%d: "RESET" "CYAN" %d is sleeping\n" RESET, get_time(philos->start_time), number);
-		our_usleep(philos->time_to_sleep);
-		printf(GREY "%d: "RESET" "MAGENTA" %d is thinking\n" RESET, get_time(philos->start_time), number);
-		if (number % 2 != 0)
-			our_usleep(50);
-	}
-	return (NULL);
-}
-
-int		get_time(long start_time)
-{
-	struct timeval	actual;
-	long			time;
-
-	gettimeofday(&actual, NULL);
-	time = (actual.tv_sec * 1000 + actual.tv_usec / 1000) - start_time;
-	return (time);
-}
-
-void 		our_usleep(long micro_sec)
-{
-	long		start;
-
-	start = get_time(0);
-	while (get_time(0) - start < micro_sec)
-		usleep(50);
 }
