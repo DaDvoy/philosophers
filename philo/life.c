@@ -1,9 +1,9 @@
 #include "philo.h"
 
-void		*living_philos(void *one_of)
+void	*living_philos(void *one_of)
 {
 	t_philos	*philos;
-	int 		number;
+	int			number;
 
 	philos = (t_philos *)one_of;
 	number = philos->number + 1;
@@ -11,25 +11,33 @@ void		*living_philos(void *one_of)
 		our_usleep(5);
 	while (1)
 	{
+		if (philos->death == 1)
+			return (NULL);
 		pthread_mutex_lock(philos->left);
 		pthread_mutex_lock(philos->right);
-        print_fork(number, philos->start_time);
+		if (philos->death == 1)
+			return (NULL);
+		print_fork(number, philos->start_time);
 		pthread_mutex_lock(&philos->print);
-        print_eat(number, philos->start_time);
+		print_eat(number, philos->start_time);
 		philos->last_time_meals = get_time(philos->start_time);
 		pthread_mutex_unlock(&philos->print);
 		our_usleep(philos->time_to_eat);
 		philos->amount_meals++;
 		pthread_mutex_unlock(philos->left);
 		pthread_mutex_unlock(philos->right);
-        print_sleep(number, philos->start_time);
+		if (philos->death == 1)
+			return (NULL);
+		print_sleep(number, philos->start_time);
 		our_usleep(philos->time_to_sleep);
-        print_think(number, philos->start_time);
+		if (philos->death == 1)
+			return (NULL);
+		print_think(number, philos->start_time);
 	}
 	return (NULL);
 }
 
-int		get_time(long start_time)
+int	get_time(long start_time)
 {
 	struct timeval	actual;
 	long			time;
@@ -39,7 +47,7 @@ int		get_time(long start_time)
 	return (time);
 }
 
-void 		our_usleep(long micro_sec)
+void	our_usleep(long micro_sec)
 {
 	long		start;
 

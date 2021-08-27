@@ -54,7 +54,7 @@ int	is_digit(char *str)
 	return (flag);
 }
 
-void		put_str_fd(const char *s, int fd)
+void	put_str_fd(const char *s, int fd)
 {
 	int		i;
 
@@ -67,4 +67,22 @@ void		put_str_fd(const char *s, int fd)
 			i++;
 		}
 	}
+}
+
+int	digit(char **argv, int argc)
+{
+	int	i;
+	int	count;
+
+	i = 1;
+	count = 1;
+	while (count++ < argc)
+	{
+		if (is_digit(argv[i++]) == 1)
+		{
+			printf(RED "Error: wrong argument\n" RESET);
+			return (1);
+		}
+	}
+	return (0);
 }

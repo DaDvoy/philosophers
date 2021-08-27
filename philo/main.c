@@ -12,14 +12,14 @@ void	zeroing(t_common *common)
 
 int	check_arg(t_common *common, int argc, char **argv)
 {
-	int flag;
+	int	flag;
 
 	flag = 0;
 	if (!(argc < 5 || argc > 6))
 	{
 		zeroing(common);
-		if (parser(common, argv, argc) == 0){
-			start_life(common);}
+		if (parser(common, argv, argc) == 0)
+			start_life(common);
 		else
 			flag = 1;
 	}
@@ -33,11 +33,12 @@ int	check_arg(t_common *common, int argc, char **argv)
 
 int	main(int argc, char **argv)
 {
-	int		flag;
-	t_common *common;
+	int			flag;
+	t_common	*common;
 
 	flag = 1;
-	if ((common = (t_common *)malloc(sizeof(t_common))))
+	common = (t_common *)malloc(sizeof(t_common));
+	if ((common))
 		flag = check_arg(common, argc, argv);
 	else
 		put_str_fd("Error: malloc for common struct\n", 2);

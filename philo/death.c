@@ -1,25 +1,35 @@
 #include "philo.h"
 
-int        check_count_meals(t_common *common)
+void	state_death(t_common *common)
 {
-    int     i;
-    int     flag;
-    int     amount_ate;
+	int		i;
 
-    i = -1;
-    flag = 1;
-    amount_ate = 0;
-    while (++i < common->initial_data.number_of_philosophers)
-    {
-        if (common->philos[i].amount_meals == common->initial_data.number_of_times_each_philosopher_must_eat)
-            amount_ate++;
-    }
-    if (amount_ate == common->initial_data.number_of_philosophers)
-        flag = 0;
-    return (flag);
+	i = -1;
+	while (++i < common->initial_data.number_of_philosophers)
+		common->philos[i].death = 1;
 }
 
-void		*death_philos(void *one_of)
+int	check_count_meals(t_common *common)
+{
+	int	 i;
+	int	 flag;
+	int	 amount_ate;
+
+	i = -1;
+	flag = 1;
+	amount_ate = 0;
+	while (++i < common->initial_data.number_of_philosophers)
+	{
+		if (common->philos[i].amount_meals
+			== common->initial_data.number_of_times_each_philosopher_must_eat)
+			amount_ate++;
+	}
+	if (amount_ate == common->initial_data.number_of_philosophers)
+		flag = 0;
+	return (flag);
+}
+
+void	*death_philos(void *one_of)
 {
 	int			i;
 	int			number;
@@ -32,21 +42,21 @@ void		*death_philos(void *one_of)
 		while (++i < common->initial_data.number_of_philosophers)
 		{
 			number = common->philos[i].number + 1;
-			if (get_time(common->philos[i].start_time) > (common->philos[i].last_time_meals + common->philos[i].time_to_die))
+			if (get_time(common->philos[i].start_time)
+				> (common->philos[i].last_time_meals
+					+ common->philos[i].time_to_die))
 			{
-				// pthread_mutex_lock(&common->philos[i].print);
-                printf(GREY "%d: "RESET" "RED" %d  died\n" RESET, get_time(common->philos[i].start_time), number);
-                common->philos[i].death = 1;
-                // pthread_mutex_unlock(&common->philos[i].print);
-                // return (NULL);
-                exit (1);
+				print_dead(number, common->philos[i].start_time);
+				state_death(common);
+				return (NULL);
 			}
-				// end of program(return NULL) + print die 
 		}
-        if (common->initial_data.number_of_times_each_philosopher_must_eat != -1 && check_count_meals(common) == 0)
-            exit(1);
-            // return (NULL);
-		//  // count meals && == needed amount that  --- end of programm
+		if (common->initial_data.number_of_times_each_philosopher_must_eat
+			!= -1 && check_count_meals(common) == 0)
+		{
+			state_death(common);
+			return (NULL);
+		}
 	}
-    return (NULL);
+	return (NULL);
 }
