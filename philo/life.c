@@ -1,5 +1,32 @@
 #include "philo.h"
 
+int	loop_live(t_philos *philos, int number)
+{
+	if (philos->death == 1)
+		return (1);
+	pthread_mutex_lock(philos->left);
+	pthread_mutex_lock(philos->right);
+	if (philos->death == 1)
+		return (1);
+	print_fork(number, philos->start_time);
+	pthread_mutex_lock(&philos->print);
+	print_eat(number, philos->start_time);
+	philos->last_time_meals = get_time(philos->start_time);
+	pthread_mutex_unlock(&philos->print);
+	our_usleep(philos->time_to_eat);
+	philos->amount_meals++;
+	pthread_mutex_unlock(philos->left);
+	pthread_mutex_unlock(philos->right);
+	if (philos->death == 1)
+		return (1);
+	print_sleep(number, philos->start_time);
+	our_usleep(philos->time_to_sleep);
+	if (philos->death == 1)
+		return (1);
+	print_think(number, philos->start_time);
+	return (0);
+}
+
 void	*living_philos(void *one_of)
 {
 	t_philos	*philos;
@@ -11,28 +38,12 @@ void	*living_philos(void *one_of)
 		our_usleep(5);
 	while (1)
 	{
-		if (philos->death == 1)
+		if (loop_live(philos, number) == 1)
 			return (NULL);
-		pthread_mutex_lock(philos->left);
-		pthread_mutex_lock(philos->right);
-		if (philos->death == 1)
-			return (NULL);
-		print_fork(number, philos->start_time);
-		pthread_mutex_lock(&philos->print);
-		print_eat(number, philos->start_time);
-		philos->last_time_meals = get_time(philos->start_time);
-		pthread_mutex_unlock(&philos->print);
-		our_usleep(philos->time_to_eat);
-		philos->amount_meals++;
-		pthread_mutex_unlock(philos->left);
-		pthread_mutex_unlock(philos->right);
-		if (philos->death == 1)
-			return (NULL);
-		print_sleep(number, philos->start_time);
-		our_usleep(philos->time_to_sleep);
-		if (philos->death == 1)
-			return (NULL);
-		print_think(number, philos->start_time);
+		if (philos->number_of_times_each_philosopher_must_eat != -1
+			&& philos->amount_meals
+			== philos->number_of_times_each_philosopher_must_eat)
+			break ;
 	}
 	return (NULL);
 }

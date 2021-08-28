@@ -40,7 +40,7 @@ typedef struct s_initial {
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				number_of_times_each_philosopher_must_eat;
+	int				amount_must_eat;
 }				t_initial;
 
 typedef struct s_common {

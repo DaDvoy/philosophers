@@ -21,11 +21,25 @@ int	check_count_meals(t_common *common)
 	while (++i < common->initial_data.number_of_philosophers)
 	{
 		if (common->philos[i].amount_meals
-			== common->initial_data.number_of_times_each_philosopher_must_eat)
+			== common->initial_data.amount_must_eat)
 			amount_ate++;
 	}
 	if (amount_ate == common->initial_data.number_of_philosophers)
 		flag = 0;
+	return (flag);
+}
+
+int	count_meals(t_common *common)
+{
+	int	flag;
+
+	flag = 0;
+	if (common->initial_data.amount_must_eat
+		!= -1 && check_count_meals(common) == 0)
+	{
+		state_death(common);
+		flag = 1;
+	}
 	return (flag);
 }
 
@@ -51,12 +65,8 @@ void	*death_philos(void *one_of)
 				return (NULL);
 			}
 		}
-		if (common->initial_data.number_of_times_each_philosopher_must_eat
-			!= -1 && check_count_meals(common) == 0)
-		{
-			state_death(common);
+		if (count_meals(common) == 1)
 			return (NULL);
-		}
 	}
 	return (NULL);
 }

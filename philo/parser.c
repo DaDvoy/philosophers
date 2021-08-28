@@ -30,10 +30,10 @@ void	fill_struct(t_common *common, char **argv, int argc)
 	common->initial_data.time_to_sleep
 		= char_to_int(argv[4]);
 	if (argc == 6)
-		common->initial_data.number_of_times_each_philosopher_must_eat
+		common->initial_data.amount_must_eat
 			= char_to_int(argv[5]);
 	else
-		common->initial_data.number_of_times_each_philosopher_must_eat = -1;
+		common->initial_data.amount_must_eat = -1;
 }
 
 void	init_forks(t_common *common)
@@ -88,10 +88,10 @@ void	refill_struct(t_common *common)
 		common->philos[i].time_to_die = common->initial_data.time_to_die;
 		common->philos[i].time_to_eat = common->initial_data.time_to_eat;
 		common->philos[i].time_to_sleep = common->initial_data.time_to_sleep;
-		if (common->initial_data.number_of_times_each_philosopher_must_eat
+		if (common->initial_data.amount_must_eat
 			!= -1)
 			common->philos[i].number_of_times_each_philosopher_must_eat
-				= common->initial_data.number_of_times_each_philosopher_must_eat;
+				= common->initial_data.amount_must_eat;
 		else
 			common->philos[i].number_of_times_each_philosopher_must_eat = -1;
 		i++;

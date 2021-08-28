@@ -9,6 +9,8 @@ void	start_life(t_common *common)
 			* (common->initial_data.number_of_philosophers));
 	if (!(common->living))
 		return (put_str_fd("Error: malloc for living\n", 2));
+	if (common->initial_data.number_of_philosophers == 1)
+		return (print_dead(1, common->philos[0].start_time - 1));
 	thread_death(common);
 	thread_living(common);
 }

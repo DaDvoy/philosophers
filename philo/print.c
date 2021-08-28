@@ -29,5 +29,5 @@ void	print_think(int number, long time)
 void	print_dead(int number, long time)
 {
 	printf(GREY "%d: "RESET" "RED" %d  died\n" RESET,
-		get_time(time), number);
+		get_time(time + 1), number);
 }
