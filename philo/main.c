@@ -42,5 +42,6 @@ int	main(int argc, char **argv)
 		flag = check_arg(common, argc, argv);
 	else
 		put_str_fd("Error: malloc for common struct\n", 2);
+	free(common);
 	return (flag);
 }

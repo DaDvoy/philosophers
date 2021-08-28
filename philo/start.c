@@ -13,6 +13,9 @@ void	start_life(t_common *common)
 		return (print_dead(1, common->philos[0].start_time - 1));
 	thread_death(common);
 	thread_living(common);
+	free(common->living);
+	free(common->philos);
+	free(common->left_fork);
 }
 
 void	thread_death(t_common *common)
