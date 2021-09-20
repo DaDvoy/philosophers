@@ -45,14 +45,14 @@ int	is_digit(char *str)
 
 	i = 0;
 	flag = 0;
-	if (str[i] == '\0')
-		flag = 1;
-	while (str[i] && flag == 0)
+	while (str[i] && str[i] != '\0' && flag == 0)
 	{
 		if (str[i] < '0' || str[i] > '9')
 			flag = 1;
 		i++;
 	}
+	if (str[i] == '\0')
+		flag = 1;
 	return (flag);
 }
 
