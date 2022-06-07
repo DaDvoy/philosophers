@@ -21,9 +21,6 @@ int	parser(t_common *common, char **argv, int argc)
 
 void	fill_struct(t_common *common, char **argv, int argc)
 {
-	int	i;
-
-	i = 1;
 	common->initial_data.number_of_philosophers = char_to_int(argv[1]);
 	common->initial_data.time_to_die = char_to_int(argv[2]);
 	common->initial_data.time_to_eat = char_to_int(argv[3]);

@@ -2,9 +2,6 @@
 
 void	start_life(t_common *common)
 {
-	int	i;
-
-	i = -1;
 	common->living = (pthread_t *)malloc(sizeof(pthread_t)
 			* (common->initial_data.number_of_philosophers));
 	if (!(common->living))
@@ -20,9 +17,6 @@ void	start_life(t_common *common)
 
 void	thread_death(t_common *common)
 {
-	int	i;
-
-	i = -1;
 	if (pthread_create(&common->dying, NULL, death_philos, (void *)(common))
 		== -1)
 		return (put_str_fd("Error: pthread_create\n", 2));
